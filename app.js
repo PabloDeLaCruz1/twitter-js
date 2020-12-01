@@ -1,9 +1,18 @@
 const express = require("express")
 const chalk = require("chalk")
 const morgan = require('morgan')
-
+const nunjucks = require("nunjucks")
 const app = express()
 const PORT = 3000
+
+let people = {
+    title: "People",
+    people: [
+        { name: 'Pablo'},
+        { name: 'Pica' },
+        { name: 'Piedra'}
+    ]
+}
 
 //middleware
 // app.use(express.static('public'))
@@ -21,9 +30,22 @@ const PORT = 3000
 
 app.use(morgan('combined'))
 
+app.set('view engine', 'html')
+app.engine('html', nunjucks.render)
+// nunjucks.configure('views'); // point nunjucks to the proper directory for templates
+
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app,
+    noCache:true
+});
+
+
+// nunjucks.render('index.html', people)
+
 
 app.get('/', (req, res, next) => {
-    res.send("Hello Twitter World!")
+    res.render( 'index', people);
     next();
 })
 app.get('/news', (req, res, next) => {
