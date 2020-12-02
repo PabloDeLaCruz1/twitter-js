@@ -3,6 +3,7 @@ const chalk = require("chalk")
 const morgan = require('morgan')
 const nunjucks = require("nunjucks")
 const tweetBank = require("./tweetBank")
+const routes = require("./routes");
 
 const app = express()
 const PORT = 3000
@@ -17,7 +18,7 @@ let people = {
 }
 
 //middleware
-// app.use(express.static('public'))
+app.use(express.static('public'))
 // app.use(function (req, res, next) {
 //     console.log('Time:', Date.now())
 //     // console.log( res.status(201));
@@ -45,16 +46,22 @@ nunjucks.configure('views', {
 
 // nunjucks.render('index.html', people)
 
+app.use('/', routes);
 
-app.get('/', (req, res, next) => {
-    res.render( 'index', people);
-    console.log("Hlellloo");
-    next();
-})
-app.get('/tweets/:id', (req, res, next) => {
-    res.render( 'index', people);
+// app.get('/', (req, res, next) => {
+//     res.render( 'index', people);
+//     console.log("Hlellloo");
+//     next();
+// })
 
-})
+// app.get('/', (req, res, next) => {});
+// app.get('/tweets', (req, res, next) => {});
+// app.post('/tweets', (req, res, next) => {});
+
+// app.get('/tweets/:id', (req, res, next) => {
+//     res.render( 'index', people);
+
+// })
 // app.get('/news', (req, res, next) => {
 //     res.send("News")
 //     next();
