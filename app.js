@@ -2,20 +2,22 @@ const express = require("express")
 const chalk = require("chalk")
 const morgan = require('morgan')
 const nunjucks = require("nunjucks")
-const tweetBank = require("./tweetBank")
+const bodyParser = require('body-parser')
+
+// const tweetBank = require("./tweetBank")
 const routes = require("./routes");
 
 const app = express()
 const PORT = 3000
 
-let people = {
-    title: "People",
-    people: [
-        { name: 'Pablo'},
-        { name: 'Pica' },
-        { name: 'Piedra'}
-    ]
-}
+// let people = {
+//     title: "People",
+//     people: [
+//         { name: 'Pablo'},
+//         { name: 'Pica' },
+//         { name: 'Piedra'}
+//     ]
+// }
 
 //middleware
 app.use(express.static('public'))
@@ -42,7 +44,11 @@ nunjucks.configure('views', {
     express: app,
     noCache:true
 });
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
+// parse application/json
+app.use(bodyParser.json())
 
 // nunjucks.render('index.html', people)
 
