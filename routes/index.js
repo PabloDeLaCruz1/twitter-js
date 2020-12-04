@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
 // could use one line instead: const router = require('express').Router();
-const tweetBank = require('../tweetBank');
-
+// const tweetBank = require('../tweetBank');
+const client = require('../db')
 
 router.get('/', (req, res) => {
-  let tweets = tweetBank.list();
-  res.render( 'index', { tweets: tweets, showForm: true  } );
+  // let tweets = tweetBank.list();
+  // res.render( 'index', { tweets: tweets, showForm: true  } );
+  client.query('SELECT * FROM tweets', function (err, result) {
+    if (err) return next(err); // pass errors to Express
+    const tweets = result.rows;
+    res.render('index', { title: 'Twitter.js', tweets: tweets, showForm: true });
+  });
 });
 router.get( '/users/:name', (req, res) => {
     let name = req.params.name;
